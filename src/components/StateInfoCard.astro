@@ -1,0 +1,52 @@
+---
+interface State {
+  name: string;
+  slug: string;
+  mit: boolean;
+  notice: number;
+  cap: { months: number; text: string } | null;
+  avgDays: number;
+  etfOk: boolean;
+  dv: boolean;
+  notes: string;
+  stat: string;
+}
+
+interface Props {
+  abbr: string;
+  state: State;
+}
+
+const { abbr, state } = Astro.props;
+
+const mitText = state.mit
+  ? `${state.name} law requires landlords to actively re-rent the unit — you only owe rent until a new tenant moves in.`
+  : `Warning: ${state.name} does not require landlords to re-rent. You may owe all remaining rent.`;
+---
+
+<div class="info-wrap">
+  <div class="info-card">
+    <h2>{state.name} Lease Break Laws</h2>
+    <div class="pill-row">
+      {state.mit
+        ? <span class="pill">Landlord must mitigate</span>
+        : <span class="pill warn">No mitigation required</span>
+      }
+      <span class="pill">{state.notice}-day notice</span>
+      {state.dv && <span class="pill">DV protection</span>}
+      {state.cap && <span class="pill">Cap: {state.cap.months} months</span>}
+    </div>
+    <p>{mitText}</p>
+    {state.cap && (
+      <p><strong>State cap:</strong> {state.name} limits your total penalty to {state.cap.months} months' rent.</p>
+    )}
+    {state.etfOk === false && (
+      <p><strong>Note:</strong> {state.name} generally does not enforce flat early termination fees — landlords are limited to actual lost rent.</p>
+    )}
+    {state.dv && (
+      <p><strong>Domestic violence protection:</strong> {state.name} allows survivors to exit a lease without financial penalty with proper documentation.</p>
+    )}
+    <p>Average re-rental time: approximately <strong>{state.avgDays} days</strong>.</p>
+    <p class="meta">Governing law: {state.stat}</p>
+  </div>
+</div>

@@ -1,0 +1,93 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  publishDate?: Date;
+}
+
+const { title, description, canonical, publishDate } = Astro.props;
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "url": canonical,
+  "datePublished": publishDate?.toISOString(),
+  "publisher": {
+    "@type": "Organization",
+    "name": "LeaseAdvisor",
+    "url": "https://earlyleaseterminationcalculator.com"
+  }
+};
+---
+<BaseLayout title={title} description={description} canonical={canonical} jsonLd={articleSchema}>
+  <div class="main">
+    <article class="article-card">
+      {publishDate && (
+        <p class="article-date">
+          {publishDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </p>
+      )}
+      <slot />
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .article-card {
+    background: white;
+    border-radius: 16px;
+    padding: 40px 48px;
+    max-width: 720px;
+    margin: 0 auto;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04);
+    line-height: 1.75;
+  }
+
+  .article-date {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 24px;
+  }
+
+  .article-card :global(h1) {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    line-height: 1.2;
+    margin-bottom: 16px;
+    color: var(--ink);
+  }
+
+  .article-card :global(h2) {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 36px;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+
+  .article-card :global(p) {
+    color: var(--ink-light);
+    margin-bottom: 16px;
+  }
+
+  .article-card :global(ul), .article-card :global(ol) {
+    padding-left: 24px;
+    color: var(--ink-light);
+    margin-bottom: 16px;
+  }
+
+  .article-card :global(li) {
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 600px) {
+    .article-card {
+      padding: 24px 20px;
+    }
+  }
+</style>

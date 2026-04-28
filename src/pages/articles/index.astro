@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const articles = (await getCollection('articles')).sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
+);
+
+const canonical = 'https://earlyleaseterminationcalculator.com/articles/';
+---
+<BaseLayout
+  title="Lease Break Guides & Advice — LeaseAdvisor"
+  description="Practical articles on how to break a lease, understand your state's laws, and minimize what you owe."
+  canonical={canonical}
+>
+  <div class="main">
+    <div class="card">
+      <div class="card-header">
+        <p class="eyebrow">Lease Advisor Guides</p>
+        <h1 class="title" style="font-size: clamp(1.4rem, 3vw, 2rem);">Articles & Advice</h1>
+        <p class="subtitle">Practical guidance on breaking a lease, understanding your rights, and reducing what you owe.</p>
+      </div>
+      <div class="card-body">
+        <ul style="list-style:none;padding:0;margin:0;">
+          {articles.map(article => (
+            <li style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);">
+              <a href={`/articles/${article.id}/`} style="text-decoration:none;">
+                <div style="font-weight:600; color: var(--ink); margin-bottom:4px;">{article.data.title}</div>
+                <div style="font-size:14px; color: var(--ink-muted);">{article.data.description}</div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+const faqs = (await getCollection('faqs')).sort(
+  (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)
+);
+
+const canonical = 'https://earlyleaseterminationcalculator.com/faq/';
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.data.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.body,
+    }
+  }))
+};
+---
+<BaseLayout
+  title="Lease Break FAQ — Common Questions Answered"
+  description="Answers to the most common questions about breaking a lease, early termination penalties, and tenant rights by state."
+  canonical={canonical}
+  jsonLd={faqSchema}
+>
+  <div class="main">
+    <div class="card">
+      <div class="card-header">
+        <p class="eyebrow">Frequently Asked Questions</p>
+        <h1 class="title" style="font-size: clamp(1.4rem, 3vw, 2rem);">Lease Break FAQ</h1>
+        <p class="subtitle">Quick answers to the most common questions about breaking a lease early.</p>
+      </div>
+      <div class="card-body">
+        {faqs.map(async faq => {
+          const { Content } = await render(faq);
+          return (
+            <div class="faq-item">
+              <h2>{faq.data.question}</h2>
+              <Content />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .faq-item {
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .faq-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .faq-item h2 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .faq-item :global(p) {
+    font-size: 14px;
+    color: var(--ink-light);
+    line-height: 1.7;
+    margin: 0;
+  }
+</style>

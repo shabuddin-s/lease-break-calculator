@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Calculator from '../components/Calculator.astro';
+import StateInfoCard from '../components/StateInfoCard.astro';
+import STATES from '../data/states.js';
+
+export function getStaticPaths() {
+  return Object.entries(STATES).map(([abbr, state]) => ({
+    params: { state: state.slug },
+    props: { abbr, state },
+  }));
+}
+
+const { abbr, state } = Astro.props;
+
+const mitText = state.mit
+  ? `${state.name} law requires landlords to actively re-rent the unit — you only owe rent until a new tenant moves in.`
+  : `Warning: ${state.name} does not require landlords to re-rent. You may owe all remaining rent.`;
+
+const canonical = `https://earlyleaseterminationcalculator.com/${state.slug}/`;
+const title = `${state.name} Lease Break Penalty Calculator — Early Termination Cost in ${abbr}`;
+const description = `Calculate your lease break penalty in ${state.name}. ${mitText} Free estimate based on ${abbr} landlord-tenant law (${state.stat}).`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": `${state.name} Lease Break Penalty Calculator`,
+  "description": mitText,
+  "url": canonical,
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+};
+---
+<BaseLayout title={title} description={description} canonical={canonical} jsonLd={jsonLd}>
+  <div class="main">
+    <StateInfoCard abbr={abbr} state={state} />
+    <Calculator presetState={abbr} />
+  </div>
+</BaseLayout>
