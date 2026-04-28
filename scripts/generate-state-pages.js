@@ -1,66 +1,216 @@
 const fs = require('fs');
 const path = require('path');
-
-const STATES = {
-  AL: { name: 'Alabama',        slug: 'alabama',         mit: false, notice: 30, avgDays: 45,  dv: false, cap: null,                                           stat: 'Ala. Code § 35-9A-401' },
-  AK: { name: 'Alaska',         slug: 'alaska',          mit: true,  notice: 30, avgDays: 60,  dv: true,  cap: null,                                           stat: 'Alaska Stat. § 34.03.230' },
-  AZ: { name: 'Arizona',        slug: 'arizona',         mit: true,  notice: 30, avgDays: 35,  dv: true,  cap: null,                                           stat: 'Ariz. Rev. Stat. § 33-1370' },
-  AR: { name: 'Arkansas',       slug: 'arkansas',        mit: false, notice: 30, avgDays: 50,  dv: false, cap: null,                                           stat: 'Ark. Code Ann. § 18-17-101' },
-  CA: { name: 'California',     slug: 'california',      mit: true,  notice: 30, avgDays: 28,  dv: true,  cap: null,                                           stat: 'Cal. Civ. Code § 1951.2' },
-  CO: { name: 'Colorado',       slug: 'colorado',        mit: true,  notice: 21, avgDays: 30,  dv: true,  cap: null,                                           stat: 'Colo. Rev. Stat. § 13-40-107.5' },
-  CT: { name: 'Connecticut',    slug: 'connecticut',     mit: true,  notice: 30, avgDays: 40,  dv: true,  cap: null,                                           stat: 'Conn. Gen. Stat. § 47a-11d' },
-  DE: { name: 'Delaware',       slug: 'delaware',        mit: true,  notice: 60, avgDays: 40,  dv: true,  cap: { months: 2,   text: "Penalty capped at 2 months' rent" },  stat: 'Del. Code Ann. tit. 25, § 5507' },
-  FL: { name: 'Florida',        slug: 'florida',         mit: true,  notice: 30, avgDays: 35,  dv: true,  cap: null,                                           stat: 'Fla. Stat. § 83.595' },
-  GA: { name: 'Georgia',        slug: 'georgia',         mit: true,  notice: 30, avgDays: 40,  dv: false, cap: null,                                           stat: 'O.C.G.A. § 44-7-1' },
-  HI: { name: 'Hawaii',         slug: 'hawaii',          mit: true,  notice: 28, avgDays: 35,  dv: true,  cap: null,                                           stat: 'Haw. Rev. Stat. § 521-80' },
-  ID: { name: 'Idaho',          slug: 'idaho',           mit: true,  notice: 30, avgDays: 45,  dv: false, cap: null,                                           stat: 'Idaho Code § 6-301' },
-  IL: { name: 'Illinois',       slug: 'illinois',        mit: true,  notice: 30, avgDays: 35,  dv: true,  cap: null,                                           stat: '735 ILCS 5/9-213.1' },
-  IN: { name: 'Indiana',        slug: 'indiana',         mit: true,  notice: 30, avgDays: 45,  dv: false, cap: null,                                           stat: 'Ind. Code § 32-31-3-12' },
-  IA: { name: 'Iowa',           slug: 'iowa',            mit: true,  notice: 30, avgDays: 45,  dv: true,  cap: null,                                           stat: 'Iowa Code § 562A.29' },
-  KS: { name: 'Kansas',         slug: 'kansas',          mit: true,  notice: 30, avgDays: 45,  dv: false, cap: null,                                           stat: 'Kan. Stat. Ann. § 58-2565' },
-  KY: { name: 'Kentucky',       slug: 'kentucky',        mit: true,  notice: 30, avgDays: 45,  dv: false, cap: null,                                           stat: 'Ky. Rev. Stat. Ann. § 383.695' },
-  LA: { name: 'Louisiana',      slug: 'louisiana',       mit: false, notice: 30, avgDays: 55,  dv: false, cap: null,                                           stat: 'La. Civ. Code Ann. art. 2695' },
-  ME: { name: 'Maine',          slug: 'maine',           mit: true,  notice: 30, avgDays: 50,  dv: true,  cap: null,                                           stat: 'Me. Rev. Stat. tit. 14, § 6010-B' },
-  MD: { name: 'Maryland',       slug: 'maryland',        mit: true,  notice: 30, avgDays: 35,  dv: false, cap: { months: 2,   text: "Penalty capped at 2 months' rent" },  stat: 'Md. Code, Real Property § 8-207' },
-  MA: { name: 'Massachusetts',  slug: 'massachusetts',   mit: true,  notice: 30, avgDays: 28,  dv: true,  cap: null,                                           stat: 'Mass. Gen. Laws ch. 186, § 15B' },
-  MI: { name: 'Michigan',       slug: 'michigan',        mit: true,  notice: 30, avgDays: 45,  dv: true,  cap: null,                                           stat: 'Mich. Comp. Laws § 554.601' },
-  MN: { name: 'Minnesota',      slug: 'minnesota',       mit: true,  notice: 30, avgDays: 40,  dv: true,  cap: null,                                           stat: 'Minn. Stat. § 504B.206' },
-  MS: { name: 'Mississippi',    slug: 'mississippi',     mit: false, notice: 30, avgDays: 55,  dv: false, cap: null,                                           stat: 'Miss. Code Ann. § 89-8-1' },
-  MO: { name: 'Missouri',       slug: 'missouri',        mit: true,  notice: 30, avgDays: 45,  dv: false, cap: null,                                           stat: 'Mo. Rev. Stat. § 441.880' },
-  MT: { name: 'Montana',        slug: 'montana',         mit: true,  notice: 30, avgDays: 50,  dv: true,  cap: null,                                           stat: 'Mont. Code Ann. § 70-24-422' },
-  NE: { name: 'Nebraska',       slug: 'nebraska',        mit: true,  notice: 30, avgDays: 45,  dv: false, cap: null,                                           stat: 'Neb. Rev. Stat. § 76-1432' },
-  NV: { name: 'Nevada',         slug: 'nevada',          mit: true,  notice: 30, avgDays: 35,  dv: true,  cap: null,                                           stat: 'Nev. Rev. Stat. § 118A.345' },
-  NH: { name: 'New Hampshire',  slug: 'new-hampshire',   mit: true,  notice: 30, avgDays: 40,  dv: true,  cap: null,                                           stat: 'N.H. Rev. Stat. Ann. § 540:2' },
-  NJ: { name: 'New Jersey',     slug: 'new-jersey',      mit: true,  notice: 30, avgDays: 30,  dv: true,  cap: null, etfOk: false,                            stat: 'N.J. Stat. Ann. § 2A:42-10.16' },
-  NM: { name: 'New Mexico',     slug: 'new-mexico',      mit: true,  notice: 30, avgDays: 45,  dv: true,  cap: null,                                           stat: 'N.M. Stat. Ann. § 47-8-37' },
-  NY: { name: 'New York',       slug: 'new-york',        mit: true,  notice: 30, avgDays: 25,  dv: true,  cap: null,                                           stat: 'N.Y. Real Prop. Law § 227-e' },
-  NC: { name: 'North Carolina', slug: 'north-carolina',  mit: true,  notice: 30, avgDays: 40,  dv: true,  cap: null,                                           stat: 'N.C. Gen. Stat. § 42-3' },
-  ND: { name: 'North Dakota',   slug: 'north-dakota',    mit: true,  notice: 30, avgDays: 50,  dv: false, cap: null,                                           stat: 'N.D. Cent. Code § 47-16-13.4' },
-  OH: { name: 'Ohio',           slug: 'ohio',            mit: true,  notice: 30, avgDays: 40,  dv: false, cap: null,                                           stat: 'Ohio Rev. Code § 5321.17' },
-  OK: { name: 'Oklahoma',       slug: 'oklahoma',        mit: true,  notice: 30, avgDays: 45,  dv: false, cap: null,                                           stat: 'Okla. Stat. tit. 41, § 122' },
-  OR: { name: 'Oregon',         slug: 'oregon',          mit: true,  notice: 30, avgDays: 30,  dv: true,  cap: { months: 1.5, text: "ETF capped at 1.5 months' rent with proper notice" }, stat: 'Or. Rev. Stat. § 90.302' },
-  PA: { name: 'Pennsylvania',   slug: 'pennsylvania',    mit: true,  notice: 30, avgDays: 40,  dv: false, cap: null,                                           stat: '68 Pa. Cons. Stat. § 250.501' },
-  RI: { name: 'Rhode Island',   slug: 'rhode-island',    mit: true,  notice: 30, avgDays: 40,  dv: true,  cap: null,                                           stat: 'R.I. Gen. Laws § 34-18-38' },
-  SC: { name: 'South Carolina', slug: 'south-carolina',  mit: true,  notice: 30, avgDays: 40,  dv: false, cap: null,                                           stat: 'S.C. Code Ann. § 27-40-730' },
-  SD: { name: 'South Dakota',   slug: 'south-dakota',    mit: true,  notice: 30, avgDays: 50,  dv: false, cap: null,                                           stat: 'S.D. Codified Laws § 43-32-12' },
-  TN: { name: 'Tennessee',      slug: 'tennessee',       mit: true,  notice: 30, avgDays: 35,  dv: false, cap: null,                                           stat: 'Tenn. Code Ann. § 66-28-507' },
-  TX: { name: 'Texas',          slug: 'texas',           mit: true,  notice: 30, avgDays: 35,  dv: true,  cap: null,                                           stat: 'Tex. Prop. Code § 91.006' },
-  UT: { name: 'Utah',           slug: 'utah',            mit: true,  notice: 30, avgDays: 35,  dv: true,  cap: null,                                           stat: 'Utah Code Ann. § 57-22-6' },
-  VT: { name: 'Vermont',        slug: 'vermont',         mit: true,  notice: 30, avgDays: 50,  dv: true,  cap: null,                                           stat: 'Vt. Stat. Ann. tit. 9, § 4467' },
-  VA: { name: 'Virginia',       slug: 'virginia',        mit: true,  notice: 30, avgDays: 35,  dv: true,  cap: null,                                           stat: 'Va. Code Ann. § 55.1-1251' },
-  WA: { name: 'Washington',     slug: 'washington',      mit: true,  notice: 20, avgDays: 28,  dv: true,  cap: null,                                           stat: 'Wash. Rev. Code § 59.18.575' },
-  WV: { name: 'West Virginia',  slug: 'west-virginia',   mit: false, notice: 30, avgDays: 60,  dv: false, cap: null,                                           stat: 'W. Va. Code § 37-6-30' },
-  WI: { name: 'Wisconsin',      slug: 'wisconsin',       mit: true,  notice: 28, avgDays: 40,  dv: true,  cap: null,                                           stat: 'Wis. Stat. § 704.29' },
-  WY: { name: 'Wyoming',        slug: 'wyoming',         mit: false, notice: 30, avgDays: 55,  dv: false, cap: null,                                           stat: 'Wyo. Stat. Ann. § 1-21-1206' },
-  DC: { name: 'Washington D.C.', slug: 'washington-dc',  mit: true,  notice: 30, avgDays: 25,  dv: true,  cap: null,                                           stat: 'D.C. Code § 42-3505.51' },
-};
+const STATES = require('./states-data');
 
 const outDir = path.join(__dirname, '..');
 
-Object.entries(STATES).forEach(([abbr, state]) => {
-  const dir = path.join(outDir, state.slug);
-  fs.mkdirSync(dir, { recursive: true });
+const SHARED_HEADER = `
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/public/calculator.css">`;
 
+const SITE_HEADER_HTML = `  <header class="site-header">
+    <a class="site-wordmark" href="/">
+      <div class="site-wordmark-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1.5L2 4.5V8c0 3 2.1 5.7 6 6.5 3.9-.8 6-3.5 6-6.5V4.5L8 1.5z" stroke="white" stroke-width="1.3" fill="none" stroke-linejoin="round"/>
+          <path d="M5.5 8l1.8 1.8 3.2-3.6" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="site-wordmark-text">Lease<span>Advisor</span></div>
+    </a>
+    <div class="site-trust-chips">
+      <span class="trust-chip">Free</span>
+      <span class="trust-chip">All 50 states + D.C.</span>
+      <span class="trust-chip">No account needed</span>
+    </div>
+  </header>`;
+
+const CALCULATOR_HTML = `      <div class="card">
+
+        <!-- Header -->
+        <div class="card-header" id="card-header">
+          <p class="eyebrow">Your personalized lease break assessment</p>
+          <h1 class="title">Most tenants owe far less than they fear.</h1>
+          <p class="subtitle">Tell us about your situation and we'll calculate exactly what you owe under your state's law — and show you how to reduce it.</p>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-wrap" id="progress-wrap">
+          <div class="progress-track">
+            <div class="progress-seg active" id="seg-0"></div>
+            <div class="progress-seg" id="seg-1"></div>
+            <div class="progress-seg" id="seg-2"></div>
+          </div>
+          <p class="progress-label" id="progress-label">About your lease · Step 1 of 3</p>
+        </div>
+
+        <div class="card-body">
+
+          <!-- STEP 0 -->
+          <div class="step active" id="step-0">
+            <div class="field">
+              <label class="field-label" for="state">Which state is the rental in?</label>
+              <select id="state" onchange="onStateChange()">
+                <option value="">Choose a state…</option>
+              </select>
+              <div class="state-note" id="state-note"></div>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="rent">Monthly rent</label>
+              <div class="money-wrap">
+                <span class="prefix">$</span>
+                <input type="number" id="rent" placeholder="1,800" min="0" oninput="validate()" />
+              </div>
+            </div>
+
+            <div class="check-group">
+              <span class="check-group-label">Are any of these true for you?</span>
+              <div class="check-item" onclick="toggle('military')">
+                <div class="check-box" id="cb-military">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4l2.5 3L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="check-text-main">I'm active duty military</div>
+                  <div class="check-text-sub">Federal SCRA law may protect you completely — $0 owed</div>
+                </div>
+              </div>
+              <div class="check-item" onclick="toggle('dv')">
+                <div class="check-box" id="cb-dv">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4l2.5 3L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="check-text-main">I'm a domestic violence survivor with documentation</div>
+                  <div class="check-text-sub">Many states allow immediate exit with no financial penalty</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn btn-primary" id="btn-0" onclick="goStep(1)" disabled>Continue</button>
+            </div>
+          </div>
+
+          <!-- STEP 1 -->
+          <div class="step" id="step-1">
+            <div class="grid-2">
+              <div class="field">
+                <label class="field-label" for="months">Months left on lease</label>
+                <input type="number" id="months" placeholder="6" min="1" max="36" oninput="validate()" />
+              </div>
+              <div class="field">
+                <label class="field-label" for="notice">How many days' notice are you giving?</label>
+                <input type="number" id="notice" placeholder="30" min="0" value="30" oninput="updateNoticeHint()" />
+                <p class="field-hint" id="notice-hint"></p>
+              </div>
+            </div>
+
+            <div class="exposure-box" id="exposure-box" style="display:none">
+              <p class="exposure-label">Your maximum starting exposure</p>
+              <p class="exposure-amount" id="exposure-amount">—</p>
+              <p class="exposure-note" id="exposure-note"></p>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn btn-ghost" onclick="goStep(0)">← Back</button>
+              <button class="btn btn-primary" id="btn-1" onclick="goStep(2)" disabled>Continue</button>
+            </div>
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="step" id="step-2">
+            <p style="font-size:14px;color:var(--ink-muted);line-height:1.65;margin-bottom:18px;">Check your lease for these — they often change the number significantly. Not sure? Leave them blank and we'll estimate from state law alone.</p>
+
+            <div class="check-group" style="margin-bottom:14px">
+              <div class="check-item" onclick="toggleETF()">
+                <div class="check-box" id="cb-etf">
+                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                    <path d="M1 4l2.5 3L9 1" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <div>
+                  <div class="check-text-main">My lease has a flat Early Termination Fee (ETF)</div>
+                  <div class="check-text-sub">A specific dollar amount written in for breaking early</div>
+                </div>
+              </div>
+              <div class="sub-field field" id="etf-field" style="display:none">
+                <label class="field-label" for="etf">ETF amount stated in your lease</label>
+                <div class="money-wrap">
+                  <span class="prefix">$</span>
+                  <input type="number" id="etf" placeholder="2,000" min="0" />
+                </div>
+                <p class="field-hint good" id="etf-note" style="display:none"></p>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label" for="relet">Reletting or admin fee (if listed separately in your lease)</label>
+              <div class="money-wrap">
+                <span class="prefix">$</span>
+                <input type="number" id="relet" placeholder="0" min="0" />
+              </div>
+              <p class="field-hint">A fee for advertising and re-renting, separate from rent. Common in Texas leases.</p>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
+              <button class="btn btn-primary" onclick="calculate()">See my estimate →</button>
+            </div>
+          </div>
+
+          <!-- RESULTS -->
+          <div class="step" id="step-result">
+            <!-- populated by JS -->
+          </div>
+
+        </div><!-- /card-body -->
+      </div><!-- /card -->
+
+      <!-- Trust strip -->
+      <div class="trust-strip">
+        <div class="trust-item">
+          <div class="trust-item-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <rect x="3" y="7" width="10" height="7" rx="1.5" stroke="var(--sage)" stroke-width="1.3"/>
+              <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" stroke="var(--sage)" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="trust-item-title">Private by design</div>
+            <div class="trust-item-body">Your information is never stored or shared</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-item-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1.5L2 4.5V8c0 3 2.1 5.7 6 6.5 3.9-.8 6-3.5 6-6.5V4.5L8 1.5z" stroke="var(--sage)" stroke-width="1.3" fill="none" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="trust-item-title">Grounded in real law</div>
+            <div class="trust-item-body">Calculations use actual state statutes for all 50 states + D.C.</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-item-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="5.5" stroke="var(--sage)" stroke-width="1.3"/>
+              <path d="M5.5 8l1.8 1.8 3.2-3.6" stroke="var(--sage)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="trust-item-title">Always free</div>
+            <div class="trust-item-body">No account, no email, no catch</div>
+          </div>
+        </div>
+      </div>`;
+
+function buildInfoCard(abbr, state) {
   const mitText = state.mit
     ? `${state.name} law requires landlords to actively re-rent the unit — you only owe rent until a new tenant moves in.`
     : `Warning: ${state.name} does not require landlords to re-rent. You may owe all remaining rent.`;
@@ -77,7 +227,31 @@ Object.entries(STATES).forEach(([abbr, state]) => {
     ? `<p><strong>Domestic violence protection:</strong> ${state.name} allows survivors to exit a lease without financial penalty with proper documentation.</p>`
     : '';
 
-  const html = `<!DOCTYPE html>
+  return `  <div class="info-wrap">
+    <div class="info-card">
+      <h2>${state.name} Lease Break Laws</h2>
+      <div class="pill-row">
+        ${state.mit ? '<span class="pill">Landlord must mitigate</span>' : '<span class="pill warn">No mitigation required</span>'}
+        <span class="pill">${state.notice}-day notice</span>
+        ${state.dv ? '<span class="pill">DV protection</span>' : ''}
+        ${state.cap ? `<span class="pill">Cap: ${state.cap.months} months</span>` : ''}
+      </div>
+      <p>${mitText}</p>
+      ${capText}
+      ${etfText}
+      ${dvText}
+      <p>Average re-rental time: approximately <strong>${state.avgDays} days</strong>.</p>
+      <p class="meta">Governing law: ${state.stat}</p>
+    </div>
+  </div>`;
+}
+
+function buildPage(abbr, state) {
+  const mitText = state.mit
+    ? `${state.name} law requires landlords to actively re-rent the unit — you only owe rent until a new tenant moves in.`
+    : `Warning: ${state.name} does not require landlords to re-rent. You may owe all remaining rent.`;
+
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -100,37 +274,34 @@ Object.entries(STATES).forEach(([abbr, state]) => {
     "operatingSystem": "All",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
   }
-  </script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, sans-serif; background: #FAF7F2; color: #1C1A18; line-height: 1.6; }
-    .prose { max-width: 680px; margin: 40px auto; padding: 0 20px 32px; }
-    h1 { font-size: 26px; font-weight: 600; margin-bottom: 14px; }
-    p { font-size: 15px; color: #5C5751; margin-bottom: 10px; }
-    strong { color: #1C1A18; }
-    .meta { font-size: 13px; color: #9C9890; margin-top: 16px; }
-    iframe { display: block; width: 100%; border: none; min-height: 820px; }
-  </style>
+  </script>${SHARED_HEADER}
 </head>
 <body>
-  <div class="prose">
-    <h1>${state.name} Lease Break Penalty Calculator</h1>
-    <p>${mitText}</p>
-    ${capText}
-    ${etfText}
-    ${dvText}
-    <p>Average re-rental time in ${state.name}: approximately <strong>${state.avgDays} days</strong>. Required notice: <strong>${state.notice} days</strong>.</p>
-    <p class="meta">Governing law: ${state.stat}</p>
+  <div class="page">
+${SITE_HEADER_HTML}
+
+    <div class="main">
+${buildInfoCard(abbr, state)}
+
+${CALCULATOR_HTML}
+
+    </div><!-- /main -->
+
+    <footer class="site-footer">
+      Laws current as of 2025 &nbsp;·&nbsp; This is an estimate, not legal advice &nbsp;·&nbsp; For counsel specific to your situation, consult a tenant rights attorney or legal aid office in your state
+    </footer>
   </div>
-  <iframe
-    src="/?state=${abbr}"
-    id="calc-frame"
-    title="Lease break penalty calculator"
-  ></iframe>
+
+  <script>window.PRESET_STATE = '${abbr}';</script>
+  <script src="/public/calculator.js"></script>
 </body>
 </html>`;
+}
 
-  fs.writeFileSync(path.join(dir, 'index.html'), html);
+Object.entries(STATES).forEach(([abbr, state]) => {
+  const dir = path.join(outDir, state.slug);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), buildPage(abbr, state));
   console.log(`Generated /${state.slug}/`);
 });
 
