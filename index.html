@@ -118,6 +118,8 @@
     body {
       font-family: 'DM Sans', system-ui, sans-serif;
       background: var(--cream);
+      background-image: radial-gradient(circle, rgba(28,26,24,0.04) 1px, transparent 1px);
+      background-size: 28px 28px;
       color: var(--ink);
       min-height: 100vh;
       line-height: 1.6;
@@ -130,36 +132,85 @@
       flex-direction: column;
     }
 
-    .topbar {
+    /* ── Site header ── */
+    .site-header {
       background: var(--warm-white);
       border-bottom: 1px solid var(--border);
-      padding: 14px 24px;
+      padding: 18px 28px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: space-between;
+      gap: 16px;
     }
 
-    .topbar-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
+    .site-wordmark {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+    }
+
+    .site-wordmark-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
       background: var(--sage);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
-    .topbar-label {
+    .site-wordmark-text {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 18px;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .site-wordmark-text span {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 18px;
+      font-weight: 300;
+      color: var(--ink-muted);
+    }
+
+    .site-trust-chips {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .trust-chip {
       font-size: 12px;
-      font-weight: 500;
-      color: var(--sage);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      color: var(--ink-faint);
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .trust-chip::before {
+      content: '·';
+      margin-right: 6px;
+      color: var(--border-strong);
+    }
+
+    .trust-chip:first-child::before {
+      display: none;
+    }
+
+    @media (max-width: 560px) {
+      .site-trust-chips {
+        display: none;
+      }
     }
 
     .main {
       flex: 1;
       display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 40px 20px 80px;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 60px;
+      gap: 0;
     }
 
     .card {
@@ -838,7 +889,68 @@
       margin-bottom: 0;
     }
 
-    /* Responsive */
+    /* ── Trust strip ── */
+    .trust-strip {
+      display: flex;
+      gap: 0;
+      max-width: 560px;
+      width: 100%;
+      margin-top: 24px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--warm-white);
+      overflow: hidden;
+    }
+
+    .trust-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 16px 12px;
+      gap: 8px;
+      border-right: 1px solid var(--border);
+    }
+
+    .trust-item:last-child {
+      border-right: none;
+    }
+
+    .trust-item-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--cream);
+      flex-shrink: 0;
+    }
+
+    .trust-item-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    .trust-item-body {
+      font-size: 11px;
+      color: var(--ink-faint);
+      line-height: 1.4;
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      text-align: center;
+      padding: 16px 24px 32px;
+      font-size: 11px;
+      color: var(--ink-faint);
+      line-height: 1.7;
+    }
+
+    /* ── Responsive ── */
     @media (max-width: 560px) {
 
       .card-header,
@@ -859,26 +971,53 @@
       .grid-2 {
         grid-template-columns: 1fr;
       }
+
+      .trust-strip {
+        flex-direction: column;
+      }
+
+      .trust-item {
+        flex-direction: row;
+        text-align: left;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        gap: 12px;
+      }
+
+      .trust-item:last-child {
+        border-bottom: none;
+      }
     }
   </style>
 </head>
 
 <body>
   <div class="page">
-    <div class="topbar">
-      <div class="topbar-dot"></div>
-      <span class="topbar-label">Free tool — no signup required</span>
-    </div>
+    <header class="site-header">
+      <a class="site-wordmark" href="/">
+        <div class="site-wordmark-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 1.5L2 4.5V8c0 3 2.1 5.7 6 6.5 3.9-.8 6-3.5 6-6.5V4.5L8 1.5z" stroke="white" stroke-width="1.3" fill="none" stroke-linejoin="round"/>
+            <path d="M5.5 8l1.8 1.8 3.2-3.6" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="site-wordmark-text">Lease<span>Advisor</span></div>
+      </a>
+      <div class="site-trust-chips">
+        <span class="trust-chip">Free</span>
+        <span class="trust-chip">All 50 states + D.C.</span>
+        <span class="trust-chip">No account needed</span>
+      </div>
+    </header>
 
     <div class="main">
       <div class="card">
 
         <!-- Header -->
         <div class="card-header" id="card-header">
-          <p class="eyebrow">Lease break calculator</p>
-          <h1 class="title">Find out what you actually owe</h1>
-          <p class="subtitle">We calculate your real exposure using your state's laws — and show you what you can do to
-            bring the number down.</p>
+          <p class="eyebrow">Your personalized lease break assessment</p>
+          <h1 class="title">Most tenants owe far less than they fear.</h1>
+          <p class="subtitle">Tell us about your situation and we'll calculate exactly what you owe under your state's law — and show you how to reduce it.</p>
         </div>
 
         <!-- Progress -->
@@ -888,7 +1027,7 @@
             <div class="progress-seg" id="seg-1"></div>
             <div class="progress-seg" id="seg-2"></div>
           </div>
-          <p class="progress-label" id="progress-label">Your situation · Step 1 of 3</p>
+          <p class="progress-label" id="progress-label">About your lease · Step 1 of 3</p>
         </div>
 
         <div class="card-body">
@@ -912,7 +1051,7 @@
             </div>
 
             <div class="check-group">
-              <span class="check-group-label">Any special circumstances?</span>
+              <span class="check-group-label">Are any of these true for you?</span>
               <div class="check-item" onclick="toggle('military')">
                 <div class="check-box" id="cb-military">
                   <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
@@ -952,14 +1091,14 @@
                 <input type="number" id="months" placeholder="6" min="1" max="36" oninput="validate()" />
               </div>
               <div class="field">
-                <label class="field-label" for="notice">Days of notice you're giving</label>
+                <label class="field-label" for="notice">How many days' notice are you giving?</label>
                 <input type="number" id="notice" placeholder="30" min="0" value="30" oninput="updateNoticeHint()" />
                 <p class="field-hint" id="notice-hint"></p>
               </div>
             </div>
 
             <div class="exposure-box" id="exposure-box" style="display:none">
-              <p class="exposure-label">Maximum possible exposure (before mitigation)</p>
+              <p class="exposure-label">Your maximum starting exposure</p>
               <p class="exposure-amount" id="exposure-amount">—</p>
               <p class="exposure-note" id="exposure-note"></p>
             </div>
@@ -972,9 +1111,7 @@
 
           <!-- STEP 2 -->
           <div class="step" id="step-2">
-            <p style="font-size:14px;color:var(--ink-muted);line-height:1.65;margin-bottom:18px;">Check your lease for
-              these — they change the calculation significantly. Not sure? Leave blank and we'll estimate from state law
-              alone.</p>
+            <p style="font-size:14px;color:var(--ink-muted);line-height:1.65;margin-bottom:18px;">Check your lease for these — they often change the number significantly. Not sure? Leave them blank and we'll estimate from state law alone.</p>
 
             <div class="check-group" style="margin-bottom:14px">
               <div class="check-item" onclick="toggleETF()">
@@ -1022,7 +1159,51 @@
 
         </div><!-- /card-body -->
       </div><!-- /card -->
+
+      <!-- Trust strip -->
+      <div class="trust-strip">
+        <div class="trust-item">
+          <div class="trust-item-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <rect x="3" y="7" width="10" height="7" rx="1.5" stroke="var(--sage)" stroke-width="1.3"/>
+              <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" stroke="var(--sage)" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="trust-item-title">Private by design</div>
+            <div class="trust-item-body">Your information is never stored or shared</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-item-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1.5L2 4.5V8c0 3 2.1 5.7 6 6.5 3.9-.8 6-3.5 6-6.5V4.5L8 1.5z" stroke="var(--sage)" stroke-width="1.3" fill="none" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="trust-item-title">Grounded in real law</div>
+            <div class="trust-item-body">Calculations use actual state statutes for all 50 states + D.C.</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-item-icon">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="5.5" stroke="var(--sage)" stroke-width="1.3"/>
+              <path d="M5.5 8l1.8 1.8 3.2-3.6" stroke="var(--sage)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="trust-item-title">Always free</div>
+            <div class="trust-item-body">No account, no email, no catch</div>
+          </div>
+        </div>
+      </div>
+
     </div><!-- /main -->
+
+    <footer class="site-footer">
+      Laws current as of 2025 &nbsp;·&nbsp; This is an estimate, not legal advice &nbsp;·&nbsp; For counsel specific to your situation, consult a tenant rights attorney or legal aid office in your state
+    </footer>
   </div>
 
   <script>
@@ -1182,10 +1363,10 @@
         const noteEl = v('exposure-note');
         if (rules) {
           if (rules.mit) {
-            noteEl.textContent = rules.name + ' requires landlords to re-rent — your actual cost will likely be lower.';
+            noteEl.textContent = rules.name + ' requires landlords to actively re-rent — your actual cost will very likely be lower than this ceiling.';
             noteEl.style.color = 'var(--sage)';
           } else {
-            noteEl.textContent = 'Warning: ' + rules.name + ' has no mitigation law. This full amount is a real possibility.';
+            noteEl.textContent = 'Note: ' + rules.name + ' has no mitigation requirement. Work through the next steps to see your realistic range.';
             noteEl.style.color = 'var(--amber)';
           }
         } else {
@@ -1197,7 +1378,7 @@
     }
 
     // ── Navigation ──────────────────────────────────────────────────────────
-    const stepNames = ['Your situation', 'Lease timeline', 'Lease clauses'];
+    const stepNames = ['About your lease', 'Lease timeline', 'Lease clauses'];
 
     function goStep(n) {
       v('step-' + currentStep).classList.remove('active');
@@ -1346,7 +1527,7 @@
         <div style="font-size:12px;color:var(--sage);font-weight:500;margin-bottom:3px">Potential savings</div>
         <div class="savings-number">${cur(savings)}</div>
       </div>
-      <div class="savings-note">gap between worst and best — your choices from here matter</div>
+      <div class="savings-note">gap between worst and best case — the actions below can help close it</div>
     </div>
   ` : '';
 
@@ -1366,16 +1547,17 @@
 
       v('step-result').innerHTML = `
     <div class="result-hero">
-      <div class="result-eyebrow">Most likely out-of-pocket</div>
+      <div class="result-eyebrow">Your most likely cost</div>
       <div class="result-amount">${cur(likely)}</div>
       <div class="result-context">${contextMsg}</div>
     </div>
 
+    <p style="font-size:13px;color:var(--ink-faint);margin-bottom:10px;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;font-size:11px">Your range, based on how quickly your landlord re-rents</p>
     <div class="scenarios-grid">
       <div class="scenario-card best">
         <div class="scenario-label">Best case</div>
         <div class="scenario-amount">${cur(best)}</div>
-        <div class="scenario-sub">Landlord re-rents in ~${Math.round(fastM * 30)} days${rules.mit ? '' : ' (landlord cooperates)'}</div>
+        <div class="scenario-sub">Re-rented in ~${Math.round(fastM * 30)} days${rules.mit ? '' : ' (landlord cooperates)'}</div>
       </div>
       <div class="scenario-card likely">
         <div class="scenario-label">Most likely</div>
@@ -1383,26 +1565,26 @@
         <div class="scenario-sub">~${rules.avgDays}-day re-rent (${rules.name} average)</div>
       </div>
       <div class="scenario-card worst">
-        <div class="scenario-label">Unlikely worst</div>
+        <div class="scenario-label">Worst case</div>
         <div class="scenario-amount">${cur(worst)}</div>
-        <div class="scenario-sub">${rules.mit ? 'Landlord makes little effort to re-rent' : 'No mitigation law — landlord pursues full amount'}</div>
+        <div class="scenario-sub">${rules.mit ? 'Minimal re-renting effort by landlord' : 'No mitigation law — landlord pursues full amount'}</div>
       </div>
     </div>
 
     ${savingsBanner}
 
     <div style="margin-bottom:20px">
-      <div class="section-label">How ${rules.name} law applies to you</div>
+      <div class="section-label">How ${rules.name} law applies to your situation</div>
       ${factsHtml}
     </div>
 
     <div style="margin-bottom:4px">
-      <div class="section-label">What to do right now to reduce what you owe</div>
+      <div class="section-label">Steps you can take to reduce what you owe</div>
       ${tipsHtml}
     </div>
 
     <div class="disclaimer">
-      <strong>This is an estimate, not legal advice.</strong> Your actual liability depends on your specific lease terms, local ordinances, and circumstances. Consider reaching out to a tenant rights organization or legal aid office in ${rules.name} for guidance specific to your situation.
+      <strong>This is an estimate, not legal advice.</strong> Your actual liability depends on your specific lease terms, local ordinances, and circumstances. A tenant rights organization or legal aid office in ${rules.name} can give you guidance specific to your situation.
     </div>
 
     <button class="btn btn-reset" onclick="restart()">← Start over</button>
@@ -1419,7 +1601,7 @@
       // Add result header
       const header = v('card-header');
       header.innerHTML = `
-    <p class="eyebrow">Your estimate</p>
+    <p class="eyebrow">Your personalized lease break assessment</p>
     <h1 class="title" style="font-size:22px;margin-bottom:0">Here's what you're likely looking at</h1>
   `;
       header.style.display = 'block';
@@ -1432,13 +1614,13 @@
 
       // Reset header
       v('card-header').innerHTML = `
-    <p class="eyebrow">Lease break calculator</p>
-    <h1 class="title">Find out what you actually owe</h1>
-    <p class="subtitle">We calculate your real exposure using your state's laws — and show you what you can do to bring the number down.</p>
+    <p class="eyebrow">Your personalized lease break assessment</p>
+    <h1 class="title">Most tenants owe far less than they fear.</h1>
+    <p class="subtitle">Tell us about your situation and we'll calculate exactly what you owe under your state's law — and show you how to reduce it.</p>
   `;
       v('progress-wrap').style.display = 'block';
       [0, 1, 2].forEach(i => v('seg-' + i).classList.toggle('active', i === 0));
-      v('progress-label').textContent = 'Your situation · Step 1 of 3';
+      v('progress-label').textContent = 'About your lease · Step 1 of 3';
 
       // Reset form
       v('state').value = '';
@@ -1456,6 +1638,15 @@
       v('btn-0').disabled = true;
       v('step-result').innerHTML = '';
     }
+
+    // Report content height to parent so state pages can auto-size the iframe
+    function reportHeight() {
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: 'lbc-height', height: document.body.scrollHeight }, '*');
+      }
+    }
+    window.addEventListener('load', reportHeight);
+    new MutationObserver(reportHeight).observe(document.body, { childList: true, subtree: true, attributes: true });
   </script>
 </body>
 
