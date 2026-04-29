@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://earlyleaseterminationcalculator.com/sitemap.xml
+Sitemap: https://earlyleaseterminationcalculator.com/sitemap-index.xml
