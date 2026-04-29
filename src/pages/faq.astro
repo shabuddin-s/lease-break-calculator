@@ -27,39 +27,45 @@ const faqSchema = {
   canonical={canonical}
   jsonLd={faqSchema}
 >
-  <div class="main">
-    <div class="card">
-      <div class="card-header">
-        <p class="eyebrow">Frequently Asked Questions</p>
-        <h1 class="title" style="font-size: clamp(1.4rem, 3vw, 2rem);">Lease Break FAQ</h1>
-        <p class="subtitle">Quick answers to the most common questions about breaking a lease early.</p>
-      </div>
-      <div class="card-body">
-        {faqs.map(async faq => {
-          const { Content } = await render(faq);
-          return (
-            <div class="faq-item">
-              <h2>{faq.data.question}</h2>
-              <Content />
-            </div>
-          );
-        })}
-      </div>
+  <div class="main--wide">
+    <div class="faq-wide-header">
+      <p class="eyebrow">Frequently Asked Questions</p>
+      <h1 class="title">Lease Break FAQ</h1>
+      <p class="subtitle">Quick answers to the most common questions about breaking a lease early.</p>
+    </div>
+    <div class="faq-masonry">
+      {faqs.map(async faq => {
+        const { Content } = await render(faq);
+        return (
+          <div class="faq-item">
+            <h2>{faq.data.question}</h2>
+            <Content />
+          </div>
+        );
+      })}
     </div>
   </div>
 </BaseLayout>
 
 <style>
-  .faq-item {
-    margin-bottom: 32px;
-    padding-bottom: 32px;
-    border-bottom: 1px solid var(--border);
+  .faq-masonry {
+    columns: 2;
+    column-gap: 32px;
   }
 
-  .faq-item:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
+  @media (max-width: 700px) {
+    .faq-masonry {
+      columns: 1;
+    }
+  }
+
+  .faq-item {
+    break-inside: avoid;
+    background: var(--warm-white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 24px 28px;
+    margin-bottom: 24px;
   }
 
   .faq-item h2 {
@@ -72,7 +78,7 @@ const faqSchema = {
 
   .faq-item :global(p) {
     font-size: 14px;
-    color: var(--ink-light);
+    color: var(--ink-muted);
     line-height: 1.7;
     margin: 0;
   }

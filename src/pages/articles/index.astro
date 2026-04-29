@@ -13,25 +13,19 @@ const canonical = 'https://earlyleaseterminationcalculator.com/articles/';
   description="Practical articles on how to break a lease, understand your state's laws, and minimize what you owe."
   canonical={canonical}
 >
-  <div class="main">
-    <div class="card">
-      <div class="card-header">
-        <p class="eyebrow">Lease Advisor Guides</p>
-        <h1 class="title" style="font-size: clamp(1.4rem, 3vw, 2rem);">Articles & Advice</h1>
-        <p class="subtitle">Practical guidance on breaking a lease, understanding your rights, and reducing what you owe.</p>
-      </div>
-      <div class="card-body">
-        <ul style="list-style:none;padding:0;margin:0;">
-          {articles.map(article => (
-            <li style="margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border);">
-              <a href={`/articles/${article.id}/`} style="text-decoration:none;">
-                <div style="font-weight:600; color: var(--ink); margin-bottom:4px;">{article.data.title}</div>
-                <div style="font-size:14px; color: var(--ink-muted);">{article.data.description}</div>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+  <div class="main--wide">
+    <div style="margin-bottom: 32px;">
+      <p class="eyebrow">Lease Advisor Guides</p>
+      <h1 class="title" style="font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 400; line-height: 1.25; color: var(--ink); margin-bottom: 8px;">Articles & Advice</h1>
+      <p class="subtitle">Practical guidance on breaking a lease, understanding your rights, and reducing what you owe.</p>
+    </div>
+    <div class="article-grid">
+      {articles.map(article => (
+        <a href={`/articles/${article.id}`} class="article-card-item">
+          <div class="article-card-title">{article.data.title}</div>
+          <div class="article-card-desc">{article.data.description}</div>
+        </a>
+      ))}
     </div>
   </div>
 </BaseLayout>
