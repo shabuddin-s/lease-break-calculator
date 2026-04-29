@@ -53,6 +53,11 @@ const STATES = {
   DC: { name: "Washington D.C.", mit: true, notice: 30, cap: null, avgDays: 25, etfOk: true, dv: true, notes: "Extremely strong tenant protections. Very fast re-rental market. Domestic violence survivors have broad exit rights.", stat: "D.C. Code § 42-3505.51" },
 };
 
+// ── Analytics ────────────────────────────────────────────────────────────
+function safeGtag(...args) {
+  if (typeof gtag === 'function') gtag(...args);
+}
+
 // ── State ──────────────────────────────────────────────────────────────────
 const checks = { military: false, dv: false, etf: false };
 let currentStep = 0;
@@ -134,6 +139,9 @@ function updateNoticeHint() {
   } else {
     hintEl.textContent = rules.name + ' requires ' + rules.notice + ' days — you\'re ' + (rules.notice - given) + ' short';
     hintEl.className = 'field-hint warn';
+    if (given > 0) {
+      safeGtag('event', 'notice_warning_shown', { state, days_given: given, days_required: rules.notice });
+    }
   }
 }
 
@@ -179,6 +187,12 @@ function goStep(n) {
   v('progress-label').textContent = stepNames[n] + ' · Step ' + (n + 1) + ' of 3';
 
   if (n === 1) { updateNoticeHint(); updateExposure(); validate(); }
+
+  if (n === 1) {
+    safeGtag('event', 'calculator_started', { state: v('state').value });
+  } else if (n === 2) {
+    safeGtag('event', 'calculator_step', { step_number: 2 });
+  }
 }
 
 // ── Calculate ───────────────────────────────────────────────────────────
@@ -200,6 +214,7 @@ function calculate() {
 
   // Protected exits
   if (checks.military) {
+    safeGtag('event', 'protected_exit_shown', { protection_type: 'military', state });
     showProtected({
       title: 'You qualify for military protection',
       body: 'The Servicemembers Civil Relief Act (SCRA) lets you exit your lease with zero penalty. Give your landlord 30 days\' written notice along with a copy of your deployment or PCS orders.',
@@ -209,6 +224,7 @@ function calculate() {
     return;
   }
   if (checks.dv && rules.dv) {
+    safeGtag('event', 'protected_exit_shown', { protection_type: 'dv', state });
     showProtected({
       title: 'You may qualify for a protected exit',
       body: rules.name + ' law allows survivors of domestic violence to terminate a lease without financial penalty. You\'ll need to provide documentation and give ' + rules.notice + ' days\' written notice.',
@@ -278,6 +294,12 @@ function calculate() {
     { hi: false, tip: 'Review your lease and the unit for habitability problems. If your landlord failed to maintain the property, you may have legal grounds to exit without penalty.' },
   ];
 
+  safeGtag('event', 'calculator_completed', {
+    state,
+    scenario_best: best,
+    scenario_likely: likely,
+    scenario_worst: worst,
+  });
   showResult({ likely, best, worst, savings, rules, months, rent, avgM, fastM, facts, tips });
 }
 
@@ -395,6 +417,7 @@ function switchToResult() {
 }
 
 function restart() {
+  safeGtag('event', 'calculator_restarted');
   v('step-result').classList.remove('active');
   currentStep = 0;
   v('step-0').classList.add('active');
