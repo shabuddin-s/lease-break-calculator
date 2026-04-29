@@ -35,7 +35,7 @@ html {
 body {
   font-family: 'DM Sans', system-ui, sans-serif;
   background: var(--cream);
-  background-image: radial-gradient(circle, rgba(28,26,24,0.04) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(28, 26, 24, 0.04) 1px, transparent 1px);
   background-size: 28px 28px;
   color: var(--ink);
   min-height: 100vh;
@@ -135,9 +135,37 @@ body {
   align-items: start;
 }
 
-@media (max-width: 900px) {
+.two-col .calc-col {
+  order: 1;
+}
+
+.two-col .info-col {
+  order: 2;
+}
+
+@media (max-width: 1024px) {
   .two-col {
     grid-template-columns: 1fr;
+  }
+
+  .two-col .calc-col {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .two-col .info-col {
+    order: 1;
+  }
+
+  .info-wrap {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .info-card {
+    max-width: 100%;
   }
 }
 
@@ -456,6 +484,7 @@ select {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 14px;
+  align-items: start;
 }
 
 /* ── Exposure preview ── */
@@ -884,6 +913,11 @@ select {
   overflow: hidden;
 }
 
+.trust-strip--centered {
+  max-width: 100%;
+  margin-top: 32px;
+}
+
 .trust-item {
   flex: 1;
   display: flex;
@@ -936,16 +970,27 @@ select {
 .info-wrap {
   display: flex;
   justify-content: center;
-  padding: 24px 20px 0;
+  padding: 10px 5px 0;
 }
 
 .info-card {
-  background: var(--warm-white);
-  border-radius: 20px;
-  box-shadow: var(--shadow-lg);
+  background: #f5f8f6;
+  border-radius: 6px;
+  box-shadow: none;
+  border: 1.5px solid #c8dece;
+  border-left: 4px solid var(--sage);
   width: 100%;
   max-width: 560px;
   padding: 28px 32px 32px;
+}
+
+.info-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--sage);
+  margin-bottom: 6px;
 }
 
 .info-card h2 {
@@ -974,7 +1019,7 @@ select {
   font-size: 13px;
   color: var(--ink-faint);
   margin-top: 14px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid #c8dece;
   padding-top: 12px;
 }
 

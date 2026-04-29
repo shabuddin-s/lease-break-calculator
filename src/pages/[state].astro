@@ -35,8 +35,49 @@ const jsonLd = {
 <BaseLayout title={title} description={description} canonical={canonical} jsonLd={jsonLd}>
   <div class="main--wide">
     <div class="two-col">
-      <StateInfoCard abbr={abbr} state={state} />
-      <Calculator presetState={abbr} />
+      <div class="info-col">
+        <StateInfoCard abbr={abbr} state={state} />
+      </div>
+      <div class="calc-col">
+        <Calculator presetState={abbr} />
+      </div>
+    </div>
+    <div class="trust-strip trust-strip--centered">
+      <div class="trust-item">
+        <div class="trust-item-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <rect x="3" y="7" width="10" height="7" rx="1.5" stroke="var(--sage)" stroke-width="1.3"/>
+            <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" stroke="var(--sage)" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="trust-item-title">Private by design</div>
+          <div class="trust-item-body">Your information is never stored or shared</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-item-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 1.5L2 4.5V8c0 3 2.1 5.7 6 6.5 3.9-.8 6-3.5 6-6.5V4.5L8 1.5z" stroke="var(--sage)" stroke-width="1.3" fill="none" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="trust-item-title">Grounded in real law</div>
+          <div class="trust-item-body">Calculations use actual state statutes for all 50 states + D.C.</div>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-item-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="5.5" stroke="var(--sage)" stroke-width="1.3"/>
+            <path d="M5.5 8l1.8 1.8 3.2-3.6" stroke="var(--sage)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="trust-item-title">Always free</div>
+          <div class="trust-item-body">No account, no email, no catch</div>
+        </div>
+      </div>
     </div>
   </div>
 </BaseLayout>

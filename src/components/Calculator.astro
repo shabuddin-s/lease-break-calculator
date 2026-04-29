@@ -81,16 +81,14 @@ const { presetState } = Astro.props;
 
       <!-- STEP 1 -->
       <div class="step" id="step-1">
-        <div class="grid-2">
-          <div class="field">
-            <label class="field-label" for="months">Months left on lease</label>
-            <input type="number" id="months" placeholder="6" min="1" max="36" oninput="validate()" />
-          </div>
-          <div class="field">
-            <label class="field-label" for="notice">How many days' notice are you giving?</label>
-            <input type="number" id="notice" placeholder="30" min="0" value="30" oninput="updateNoticeHint()" />
-            <p class="field-hint" id="notice-hint"></p>
-          </div>
+        <div class="field">
+          <label class="field-label" for="months">Months left on lease</label>
+          <input type="number" id="months" placeholder="6" min="1" max="36" oninput="validate()" />
+        </div>
+        <div class="field">
+          <label class="field-label" for="notice">How many days' notice are you giving?</label>
+          <input type="number" id="notice" placeholder="30" min="0" value="30" oninput="updateNoticeHint()" />
+          <p class="field-hint" id="notice-hint"></p>
         </div>
 
         <div class="exposure-box" id="exposure-box" style="display:none">
@@ -153,43 +151,4 @@ const { presetState } = Astro.props;
 
     </div><!-- /card-body -->
   </div><!-- /card -->
-
-  <!-- Trust strip -->
-  <div class="trust-strip">
-    <div class="trust-item">
-      <div class="trust-item-icon">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <rect x="3" y="7" width="10" height="7" rx="1.5" stroke="var(--sage)" stroke-width="1.3"/>
-          <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" stroke="var(--sage)" stroke-width="1.3" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div>
-        <div class="trust-item-title">Private by design</div>
-        <div class="trust-item-body">Your information is never stored or shared</div>
-      </div>
-    </div>
-    <div class="trust-item">
-      <div class="trust-item-icon">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path d="M8 1.5L2 4.5V8c0 3 2.1 5.7 6 6.5 3.9-.8 6-3.5 6-6.5V4.5L8 1.5z" stroke="var(--sage)" stroke-width="1.3" fill="none" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div>
-        <div class="trust-item-title">Grounded in real law</div>
-        <div class="trust-item-body">Calculations use actual state statutes for all 50 states + D.C.</div>
-      </div>
-    </div>
-    <div class="trust-item">
-      <div class="trust-item-icon">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <circle cx="8" cy="8" r="5.5" stroke="var(--sage)" stroke-width="1.3"/>
-          <path d="M5.5 8l1.8 1.8 3.2-3.6" stroke="var(--sage)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div>
-        <div class="trust-item-title">Always free</div>
-        <div class="trust-item-body">No account, no email, no catch</div>
-      </div>
-    </div>
-  </div>
 
