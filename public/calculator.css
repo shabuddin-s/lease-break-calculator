@@ -94,6 +94,12 @@ body {
   color: var(--ink-muted);
 }
 
+.site-logo {
+  height: 32px;
+  width: auto;
+  display: block;
+}
+
 .site-nav {
   display: flex;
   align-items: center;

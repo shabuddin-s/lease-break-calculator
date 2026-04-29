@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 168" width="168" height="168" role="img" aria-label="Lease Break Penalty Calculator">
+  <title>Lease Break Penalty Calculator</title>
+  <!-- Shield -->
+  <path d="M84 0 L160 28 L160 92 Q160 148 84 168 Q8 148 8 92 L8 28 Z" fill="#1C1A18"/>
+  <path d="M84 7 L153 32 L153 94 Q153 143 84 161 Q15 143 15 94 L15 32 Z" fill="none" stroke="#4A7C59" stroke-width="1" opacity="0.35"/>
+  <!-- Roof -->
+  <polygon points="84,40 126,70 42,70" fill="#4A7C59"/>
+  <!-- Walls -->
+  <rect x="48" y="68" width="72" height="62" rx="3" fill="rgba(74,124,89,0.14)" stroke="#4A7C59" stroke-width="1.5"/>
+  <!-- Door frame -->
+  <rect x="78" y="88" width="20" height="42" rx="2" fill="none" stroke="#4A7C59" stroke-width="1"/>
+  <!-- Open door ajar -->
+  <path d="M78 88 L78 130 L90 127 L90 90 Z" fill="#4A7C59" opacity="0.55"/>
+  <line x1="78" y1="88" x2="78" y2="130" stroke="rgba(74,124,89,0.3)" stroke-width="0.8"/>
+  <!-- Knob -->
+  <circle cx="88" cy="111" r="2" fill="#4A7C59" opacity="0.7"/>
+  <!-- Triangle -->
+  <polygon points="100,95 126,112 100,129" fill="#C94F4F"/>
+</svg>
