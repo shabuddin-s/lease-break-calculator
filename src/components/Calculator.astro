@@ -44,7 +44,7 @@ const { presetState } = Astro.props;
           <label class="field-label" for="rent">Monthly rent</label>
           <div class="money-wrap">
             <span class="prefix">$</span>
-            <input type="number" id="rent" placeholder="1,800" min="0" oninput="validate()" />
+            <input type="number" id="rent" placeholder="e.g. 1800" min="0" oninput="validate()" />
           </div>
         </div>
 
@@ -83,7 +83,7 @@ const { presetState } = Astro.props;
       <div class="step" id="step-1">
         <div class="field">
           <label class="field-label" for="months">Months left on lease</label>
-          <input type="number" id="months" placeholder="6" min="1" max="36" oninput="validate()" />
+          <input type="number" id="months" placeholder="e.g. 8" min="1" max="36" oninput="validate()" />
         </div>
         <div class="field">
           <label class="field-label" for="notice">How many days' notice are you giving?</label>

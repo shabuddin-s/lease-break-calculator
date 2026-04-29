@@ -410,7 +410,7 @@ function restart() {
   v('progress-label').textContent = 'About your lease · Step 1 of 3';
 
   // Reset form
-  v('state').value = '';
+  const currentState = v('state').value;
   v('rent').value = '';
   v('months').value = '';
   v('notice').value = '30';
@@ -421,7 +421,7 @@ function restart() {
   v('cb-dv').classList.remove('checked');
   v('cb-etf').classList.remove('checked');
   v('etf-field').style.display = 'none';
-  v('state-note').className = 'state-note';
-  v('btn-0').disabled = true;
+  v('state').value = currentState;
+  if (currentState) onStateChange(); else v('btn-0').disabled = true;
   v('step-result').innerHTML = '';
 }

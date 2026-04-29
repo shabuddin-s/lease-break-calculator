@@ -29,11 +29,13 @@
 }
 
 html {
-  font-size: 16px;
+  font-size: 14px;
+  overflow-x: hidden;
 }
 
 body {
   font-family: 'DM Sans', system-ui, sans-serif;
+  overflow-x: hidden;
   background: var(--cream);
   background-image: radial-gradient(circle, rgba(28, 26, 24, 0.04) 1px, transparent 1px);
   background-size: 28px 28px;
@@ -335,6 +337,12 @@ select {
   transition: border-color 0.18s, box-shadow 0.18s;
   appearance: none;
   -webkit-appearance: none;
+}
+
+input[type="number"]::placeholder {
+  color: var(--ink-faint);
+  opacity: 0.6;
+  font-style: italic;
 }
 
 input[type="number"]:focus,
@@ -1045,6 +1053,40 @@ select {
 }
 
 /* ── Responsive ── */
+@media (max-width: 768px) {
+  .site-header {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+
+  .site-nav {
+    gap: 12px;
+  }
+
+  .site-nav-link {
+    font-size: 13px;
+  }
+
+  .site-wordmark-text,
+  .site-wordmark-text span {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 400px) {
+  .site-wordmark-text span {
+    display: none;
+  }
+
+  .site-nav {
+    gap: 10px;
+  }
+
+  .site-nav-link {
+    font-size: 12px;
+  }
+}
+
 @media (max-width: 560px) {
 
   .card-header,
