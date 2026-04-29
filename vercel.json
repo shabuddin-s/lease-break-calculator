@@ -1,6 +1,14 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.earlyleaseterminationcalculator.com" }],
+      "destination": "https://earlyleaseterminationcalculator.com/$1",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

@@ -17,6 +17,13 @@ const articleSchema = {
   "description": description,
   "url": canonical,
   "datePublished": publishDate?.toISOString(),
+  "dateModified": publishDate?.toISOString(),
+  "image": "https://earlyleaseterminationcalculator.com/og-image.png",
+  "author": {
+    "@type": "Organization",
+    "name": "LeaseAdvisor",
+    "url": "https://earlyleaseterminationcalculator.com"
+  },
   "publisher": {
     "@type": "Organization",
     "name": "LeaseAdvisor",
@@ -24,14 +31,15 @@ const articleSchema = {
   }
 };
 ---
-<BaseLayout title={title} description={description} canonical={canonical} jsonLd={articleSchema}>
+<BaseLayout title={title} description={description} canonical={canonical} jsonLd={articleSchema} ogType="article">
   <div class="main">
     <article class="article-card">
       {publishDate && (
         <p class="article-date">
-          {publishDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          {publishDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
         </p>
       )}
+      <p class="article-disclaimer">This article is for informational purposes only — not legal advice. For your specific situation, consider speaking with a tenant rights attorney or local legal aid office.</p>
       <slot />
     </article>
   </div>
@@ -51,7 +59,16 @@ const articleSchema = {
   .article-date {
     font-size: 13px;
     color: var(--ink-muted);
-    margin-bottom: 24px;
+    margin-bottom: 12px;
+  }
+
+  .article-disclaimer {
+    font-size: 13px;
+    color: var(--ink-muted);
+    font-style: italic;
+    border-left: 3px solid var(--border, #e5e7eb);
+    padding-left: 12px;
+    margin-bottom: 32px;
   }
 
   .article-card :global(h1) {
@@ -63,10 +80,20 @@ const articleSchema = {
   }
 
   .article-card :global(h2) {
-    font-size: 1.2rem;
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-top: 48px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border, #e5e7eb);
+    color: var(--ink);
+  }
+
+  .article-card :global(h3) {
+    font-size: 1.05rem;
     font-weight: 600;
-    margin-top: 36px;
-    margin-bottom: 12px;
+    margin-top: 28px;
+    margin-bottom: 8px;
     color: var(--ink);
   }
 
@@ -83,6 +110,35 @@ const articleSchema = {
 
   .article-card :global(li) {
     margin-bottom: 8px;
+  }
+
+  .article-card :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+  }
+
+  .article-card :global(th) {
+    text-align: left;
+    font-weight: 600;
+    color: var(--ink);
+    padding: 10px 14px;
+    border-bottom: 2px solid var(--border, #e5e7eb);
+  }
+
+  .article-card :global(td) {
+    padding: 10px 14px;
+    color: var(--ink-light);
+    border-bottom: 1px solid var(--border, #e5e7eb);
+  }
+
+  .article-card :global(tr:last-child td) {
+    border-bottom: none;
+  }
+
+  .article-card :global(tr:nth-child(even) td) {
+    background: #f9fafb;
   }
 
   @media (max-width: 600px) {

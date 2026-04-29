@@ -1,7 +1,7 @@
 ---
 title: "How to Break a Lease Without Paying a Penalty"
 description: "Learn the legal ways to exit a lease early — from military orders to domestic violence protections — and how to minimize what you owe in every state."
-publishDate: 2025-01-15
+publishDate: 2026-04-29
 ---
 
 # How to Break a Lease Without Paying a Penalty
