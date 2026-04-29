@@ -1,8 +1,9 @@
 ---
 interface Props {
   presetState?: string;
+  heading?: string;
 }
-const { presetState } = Astro.props;
+const { presetState, heading = 'Lease Break Penalty Calculator' } = Astro.props;
 ---
 
 {presetState && (
@@ -15,8 +16,8 @@ const { presetState } = Astro.props;
 
     <div class="card-header" id="card-header">
       <p class="eyebrow">Your personalized lease break assessment</p>
-      <h1 class="title">Most tenants owe far less than they fear.</h1>
-      <p class="subtitle">Tell us about your situation and we'll calculate exactly what you owe under your state's law — and show you how to reduce it.</p>
+      <h1 class="title">{heading}</h1>
+      <p class="subtitle">Most tenants owe far less than they fear. Tell us about your situation and we'll calculate exactly what you owe under your state's law — and show you how to reduce it.</p>
     </div>
 
     <div class="progress-wrap" id="progress-wrap">
