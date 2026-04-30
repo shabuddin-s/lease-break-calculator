@@ -46,4 +46,4 @@ Email alone is generally not sufficient for legal notice unless your lease expli
 
 ## Use the letter generator
 
-Rather than writing from scratch, use our [lease break letter generator](/). Enter your state and situation and it will produce a complete, properly formatted notice letter you can download and send.
+Rather than writing from scratch, use our [lease break letter generator](/letter-generator). Enter your state and situation and it will produce a complete, properly formatted notice letter you can download and send.

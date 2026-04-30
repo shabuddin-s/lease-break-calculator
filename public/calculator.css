@@ -6,6 +6,11 @@
   padding: 0;
 }
 
+a {
+  color: var(--sage);
+  text-decoration: underline;
+}
+
 :root {
   --cream: #FAF7F2;
   --warm-white: #FFFEF9;

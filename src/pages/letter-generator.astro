@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const canonical =
+  "https://earlyleaseterminationcalculator.com/letter-generator/";
+---
+
+<BaseLayout
+  title="Lease Break Letter Generator — Coming Soon"
+  description="Generate a properly formatted lease termination notice letter for your state. Coming soon."
+  canonical={canonical}
+>
+  <div class="main">
+    <div class="card">
+      <div class="card-header">
+        <p class="eyebrow">Generate Your Lease Termination Notice</p>
+        <h1 class="title">Lease Break Letter Generator</h1>
+        <p class="subtitle">
+          We're building a tool that drafts a complete, properly formatted lease
+          termination notice letter based on your state and situation — ready to
+          download and send.
+        </p>
+      </div>
+      <div class="card-body">
+        <div class="coming-soon-card">
+          <div class="status-badge">Coming soon</div>
+          <p>
+            In the meantime, our <a
+              href="/articles/how-to-write-a-lease-break-notice-letter"
+              >step-by-step guide</a
+            > covers exactly what to include in your notice letter.
+          </p>
+          <p>
+            You can also <a href="/">use the calculator</a> to estimate your early
+            termination penalty before you send the letter.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .coming-soon-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+  }
+
+  .coming-soon-card p {
+    font-size: 15px;
+    color: var(--ink-muted);
+    line-height: 1.7;
+    margin: 0 0 12px;
+  }
+
+  .coming-soon-card p:last-child {
+    margin-bottom: 0;
+  }
+
+  .status-badge {
+    display: inline-block;
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffc107;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+</style>
