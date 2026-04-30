@@ -189,7 +189,7 @@ body {
 }
 
 .article-card-item {
-  background: var(--warm-white);
+  background: white;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 24px 28px;
