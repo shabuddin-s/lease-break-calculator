@@ -2,16 +2,21 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const articles = (await getCollection('articles')).sort(
-  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
-);
-
 function getBadge(article: any): { label: string; type: 'state' | 'strategy' | 'guide' } {
   if (article.data.state) return { label: 'State Guide', type: 'state' };
   const slug = article.id ?? '';
   if (slug.includes('how-to') || slug.includes('-vs-')) return { label: 'Strategy', type: 'strategy' };
   return { label: 'Guide', type: 'guide' };
 }
+
+const TYPE_ORDER: Record<string, number> = { strategy: 0, guide: 1, state: 2 };
+
+const articles = (await getCollection('articles')).sort((a, b) => {
+  const typeA = TYPE_ORDER[getBadge(a).type] ?? 99;
+  const typeB = TYPE_ORDER[getBadge(b).type] ?? 99;
+  if (typeA !== typeB) return typeA - typeB;
+  return b.data.publishDate.getTime() - a.data.publishDate.getTime();
+});
 
 function formatDate(d: Date) {
   // Use UTC to avoid timezone shifting the date stored in frontmatter
