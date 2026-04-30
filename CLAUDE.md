@@ -54,6 +54,7 @@ lease-break-calculator/
 - Ensure the letter generator gracefully falls back to a hardcoded template if the API call fails
 - When adding a new article: drop a `.md` file in `src/content/articles/` — no code changes needed
 - When adding a new FAQ: drop a `.md` file in `src/content/faqs/` — no code changes needed
+- **Canonical URLs must never have a trailing slash** — use `https://earlyleaseterminationcalculator.com/path` not `.../path/`. This applies to all pages including the homepage (`https://earlyleaseterminationcalculator.com` with no slash).
 
 ## Key implementation notes
 

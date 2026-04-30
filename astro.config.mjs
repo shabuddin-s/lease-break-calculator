@@ -5,5 +5,7 @@ export default defineConfig({
   output: 'static',
   site: 'https://earlyleaseterminationcalculator.com',
   trailingSlash: 'never',
-  integrations: [sitemap()],
+  integrations: [sitemap({
+    filter: (page) => !page.includes('/letter-generator'),
+  })],
 });

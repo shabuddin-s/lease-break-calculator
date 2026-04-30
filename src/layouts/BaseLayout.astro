@@ -5,9 +5,10 @@ interface Props {
   canonical: string;
   jsonLd?: object | object[];
   ogType?: string;
+  noindex?: boolean;
 }
 
-const { title, description, canonical, jsonLd, ogType = 'website' } = Astro.props;
+const { title, description, canonical, jsonLd, ogType = 'website', noindex = false } = Astro.props;
 const schemas = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 const gaId = import.meta.env.PUBLIC_GA_ID;
 ---
@@ -19,6 +20,7 @@ const gaId = import.meta.env.PUBLIC_GA_ID;
 
   <title>{title}</title>
   <meta name="description" content={description} />
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
   <link rel="canonical" href={canonical} />
 
   <meta property="og:type" content={ogType} />
