@@ -65,6 +65,7 @@ let currentStep = 0;
 // ── Init ──────────────────────────────────────────────────────────────────
 (function init() {
   const sel = document.getElementById('state');
+  if (!sel) return;
   Object.entries(STATES).sort((a, b) => a[1].name.localeCompare(b[1].name)).forEach(([k, v]) => {
     const o = document.createElement('option');
     o.value = k; o.textContent = v.name;
