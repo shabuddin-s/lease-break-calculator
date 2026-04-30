@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import ArticleIcon from '../../components/ArticleIcon.astro';
 
 function getBadge(article: any): { label: string; type: 'state' | 'strategy' | 'guide' } {
   if (article.data.state) return { label: 'State Guide', type: 'state' };
@@ -23,6 +24,12 @@ function formatDate(d: Date) {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 }
 
+function readTime(body: string): string {
+  const words = body.trim().split(/\s+/).length;
+  const mins = Math.max(1, Math.round(words / 200));
+  return `${mins} min read`;
+}
+
 const canonical = 'https://earlyleaseterminationcalculator.com/articles';
 ---
 <BaseLayout
@@ -43,13 +50,23 @@ const canonical = 'https://earlyleaseterminationcalculator.com/articles';
         const badge = getBadge(article);
         return (
           <a href={`/articles/${article.id}`} class={`article-card-item article-card--${badge.type}`}>
-            <div class="article-card-header">
-              <span class={`article-card-badge article-card-badge--${badge.type}`}>{badge.label}</span>
-              <span class="article-card-date">{formatDate(article.data.publishDate)}</span>
+            <div class="article-card-top">
+              <div class="article-card-top-left">
+                <div class={`article-card-icon article-card-icon--${badge.type}`}>
+                  <ArticleIcon type={badge.type} size={28} />
+                </div>
+                <span class={`article-card-badge article-card-badge--${badge.type}`}>{badge.label}</span>
+              </div>
+              <div class="article-card-top-right">
+                <span class="article-card-read-time">{readTime(article.body)}</span>
+              </div>
             </div>
             <div class="article-card-title">{article.data.title}</div>
             <div class="article-card-desc">{article.data.description}</div>
-            <div class="article-card-cta">Read <span aria-hidden="true">→</span></div>
+            <div class="article-card-footer">
+              <span class="article-card-date">{formatDate(article.data.publishDate)}</span>
+              <span class="article-card-cta">Read <span aria-hidden="true">→</span></span>
+            </div>
           </a>
         );
       })}
