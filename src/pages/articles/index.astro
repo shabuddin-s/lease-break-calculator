@@ -6,6 +6,18 @@ const articles = (await getCollection('articles')).sort(
   (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
 );
 
+function getBadge(article: any): { label: string; type: 'state' | 'strategy' | 'guide' } {
+  if (article.data.state) return { label: 'State Guide', type: 'state' };
+  const slug = article.id ?? '';
+  if (slug.includes('how-to') || slug.includes('-vs-')) return { label: 'Strategy', type: 'strategy' };
+  return { label: 'Guide', type: 'guide' };
+}
+
+function formatDate(d: Date) {
+  // Use UTC to avoid timezone shifting the date stored in frontmatter
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+}
+
 const canonical = 'https://earlyleaseterminationcalculator.com/articles/';
 ---
 <BaseLayout
@@ -14,18 +26,28 @@ const canonical = 'https://earlyleaseterminationcalculator.com/articles/';
   canonical={canonical}
 >
   <div class="main--wide">
-    <div style="margin-bottom: 32px;">
-      <p class="eyebrow">Lease Advisor Guides</p>
-      <h1 class="title" style="font-family: 'DM Serif Display', Georgia, serif; font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 400; line-height: 1.25; color: var(--ink); margin-bottom: 8px;">Articles & Advice</h1>
-      <p class="subtitle">Practical guidance on breaking a lease, understanding your rights, and reducing what you owe.</p>
+    <div class="articles-header">
+      <div>
+        <p class="eyebrow">Lease Advisor Guides</p>
+        <h1 class="articles-heading">Articles & Advice</h1>
+        <p class="articles-subheading">Practical guidance on breaking a lease, understanding your rights, and reducing what you owe.</p>
+      </div>
     </div>
     <div class="article-grid">
-      {articles.map(article => (
-        <a href={`/articles/${article.id}`} class="article-card-item">
-          <div class="article-card-title">{article.data.title}</div>
-          <div class="article-card-desc">{article.data.description}</div>
-        </a>
-      ))}
+      {articles.map(article => {
+        const badge = getBadge(article);
+        return (
+          <a href={`/articles/${article.id}`} class={`article-card-item article-card--${badge.type}`}>
+            <div class="article-card-header">
+              <span class={`article-card-badge article-card-badge--${badge.type}`}>{badge.label}</span>
+              <span class="article-card-date">{formatDate(article.data.publishDate)}</span>
+            </div>
+            <div class="article-card-title">{article.data.title}</div>
+            <div class="article-card-desc">{article.data.description}</div>
+            <div class="article-card-cta">Read <span aria-hidden="true">→</span></div>
+          </a>
+        );
+      })}
     </div>
   </div>
 </BaseLayout>
