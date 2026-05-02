@@ -36,7 +36,7 @@ const articleSchema = {
 ---
 <BaseLayout title={title} description={description} canonical={canonical} jsonLd={articleSchema} ogType="article">
   <div class="main">
-    <article class="article-card">
+    <article class="article-card" data-pagefind-body>
       <div class="article-header-row">
         {type && (
           <div class={`article-icon-wrap article-icon-wrap--${type}`}>

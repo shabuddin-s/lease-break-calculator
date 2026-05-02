@@ -1282,3 +1282,94 @@ select {
 .article-icon-wrap--state    { color: var(--sage); }
 .article-icon-wrap--strategy { color: var(--amber); }
 .article-icon-wrap--guide    { color: var(--ink-muted); }
+
+/* ── Search button ─────────────────────────────────────── */
+.search-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--ink-muted);
+  cursor: pointer;
+  padding: 5px 7px;
+  transition: color 0.15s, border-color 0.15s;
+  line-height: 0;
+}
+.search-btn:hover {
+  color: var(--sage);
+  border-color: var(--sage-mid);
+}
+
+/* ── Search modal ──────────────────────────────────────── */
+.search-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 80px;
+}
+.search-modal--open {
+  display: flex;
+}
+.search-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(28, 26, 24, 0.5);
+  backdrop-filter: blur(2px);
+}
+.search-modal-card {
+  position: relative;
+  background: var(--warm-white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 600px;
+  margin: 0 20px;
+  padding: 20px;
+}
+.search-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--ink-muted);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 0;
+  border-radius: 6px;
+  transition: color 0.15s;
+}
+.search-modal-close:hover {
+  color: var(--ink);
+}
+
+/* ── Pagefind UI overrides ─────────────────────────────── */
+:root {
+  --pagefind-ui-scale: 1;
+  --pagefind-ui-primary: var(--sage);
+  --pagefind-ui-text: var(--ink);
+  --pagefind-ui-background: var(--warm-white);
+  --pagefind-ui-border: var(--border);
+  --pagefind-ui-tag: var(--sage-light);
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: 8px;
+  --pagefind-ui-image-border-radius: 4px;
+  --pagefind-ui-font: 'DM Sans', system-ui, sans-serif;
+}
+.pagefind-ui__search-input {
+  font-size: 15px !important;
+}
+.pagefind-ui__result-title {
+  font-weight: 600;
+}
+.pagefind-ui__result-excerpt mark {
+  background: var(--sage-light);
+  color: var(--sage);
+  border-radius: 2px;
+  padding: 0 2px;
+}

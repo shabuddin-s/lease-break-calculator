@@ -66,7 +66,7 @@ const gaId = import.meta.env.PUBLIC_GA_ID;
 </head>
 <body>
   <div class="page">
-    <header class="site-header">
+    <header class="site-header" data-pagefind-ignore>
       <a class="site-wordmark" href="/">
         <img src="/logo.svg" alt="" class="site-logo" height="32" aria-hidden="true" />
         <div class="site-wordmark-text">Lease<span>Advisor</span></div>
@@ -75,17 +75,84 @@ const gaId = import.meta.env.PUBLIC_GA_ID;
         <a href="/" class="site-nav-link">Calculator</a>
         <a href="/articles" class="site-nav-link">Articles</a>
         <a href="/faq" class="site-nav-link">FAQ</a>
+        <button class="search-btn" id="search-open" aria-label="Search articles">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
       </nav>
     </header>
+
+    <div class="search-modal" id="search-modal" role="dialog" aria-modal="true" aria-label="Search">
+      <div class="search-modal-backdrop" id="search-backdrop"></div>
+      <div class="search-modal-card">
+        <button class="search-modal-close" id="search-close" aria-label="Close search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <div id="search"></div>
+      </div>
+    </div>
 
     <main>
       <slot />
     </main>
 
-    <footer class="site-footer">
+    <footer class="site-footer" data-pagefind-ignore>
       <a href="/privacy-policy">Privacy Policy</a> &nbsp;·&nbsp; Free tool &nbsp;·&nbsp; Not legal advice &nbsp;·&nbsp; Built for US renters
     </footer>
   </div>
   <script is:inline src="/calculator.js"></script>
+  <script is:inline>
+    (function () {
+      var modal = document.getElementById('search-modal');
+      var openBtn = document.getElementById('search-open');
+      var closeBtn = document.getElementById('search-close');
+      var backdrop = document.getElementById('search-backdrop');
+      var initialized = false;
+      var loading = false;
+
+      function initPagefind() {
+        return new Promise(function (resolve) {
+          if (initialized) { resolve(); return; }
+          if (loading) { var t = setInterval(function(){ if(initialized){clearInterval(t);resolve();} }, 50); return; }
+          loading = true;
+          var link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = '/pagefind/pagefind-ui.css';
+          document.head.appendChild(link);
+          var script = document.createElement('script');
+          script.src = '/pagefind/pagefind-ui.js';
+          script.onload = function () {
+            new PagefindUI({ element: '#search', showImages: false, resetStyles: false });
+            initialized = true;
+            resolve();
+          };
+          document.head.appendChild(script);
+        });
+      }
+
+      function openSearch() {
+        initPagefind().then(function () {
+          modal.classList.add('search-modal--open');
+          document.body.style.overflow = 'hidden';
+          setTimeout(function () {
+            var input = modal.querySelector('input');
+            if (input) input.focus();
+          }, 50);
+        });
+      }
+
+      function closeSearch() {
+        modal.classList.remove('search-modal--open');
+        document.body.style.overflow = '';
+      }
+
+      openBtn.addEventListener('click', openSearch);
+      closeBtn.addEventListener('click', closeSearch);
+      backdrop.addEventListener('click', closeSearch);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeSearch();
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+      });
+    })();
+  </script>
 </body>
 </html>
